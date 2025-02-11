@@ -1,0 +1,145 @@
+.items {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    font-weight: bold;
+    margin: 0.25em;
+    width: 95%;
+    border-radius: 15px;
+    border-color: black;
+    border-style: solid;
+    background-color: lightgrey;
+}
+
+.items_rowtop {
+    display: flex;
+    background-color: red;
+    color: white;
+    font-size: 1.2em;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 5px 0px 7px 0px;
+    margin-bottom: 4px;
+}
+
+.items_rowtop > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+.items_row {
+    display: flex;
+    background-color: lightgrey;
+    padding: 5px 0px 0px 0px;
+}
+
+.items_row > div {
+    line-height: 0.8;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+.left {
+    margin-right: 15px;
+}
+
+.right {
+    margin-left: 15px;
+}
+
+.items_rowbottom {
+    display: flex;
+    align-items: center;
+    background-color: lightgrey;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.items_rowbottom > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.items_rowbottom img {
+    height: 25px;
+    margin-top: 7px;
+}
+
+.left_bottom {
+    flex: 0.7;
+    margin-left: 10px;
+}
+
+.center_bottom {
+    flex: 0.2;
+}
+
+.right_bottom {
+    flex: 0.7;
+    margin-right: 10px;
+}
+
+.items a:link {
+    color: white;
+    text-decoration: none;
+}
+  
+.items a:visited {
+    color: white;
+    text-decoration: none;
+}
+  
+.items a:hover {
+    color: white;
+    text-decoration: none;
+}
+  
+.items a:active {
+    color: white;
+    text-decoration: none;
+}
+
+.button1 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style:outset;
+    max-width: 90%;
+    background-color: lightgreen;
+    text-align: center;
+  }
+
+.button1:active {
+    background-color: green;
+    border-style: inset;
+}
+
+.button2 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: lightcoral;
+    text-align: center;
+  }
+
+.button2:active {
+    background-color: red;
+    border-style: inset;
+}
+  
+  

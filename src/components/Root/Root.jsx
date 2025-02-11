@@ -8,17 +8,30 @@ function Root(props) {
 
   return (
     <>
-      <div>
-        <Header />
-          <Content handleReset={props.handleReset}
-                   handlePassword={props.handlePassword}
-                   handleUserReset={props.handleUserReset}
-                   localdata={props.localdata}
-                   userdata={props.userdata}
-                   testit={props.testit}>
-            <Outlet />
-          </Content>
-        <Menu />
+      <div className="root">
+        <div className="root_container">
+          <div className="container">
+            <Header />
+            <Content handleReset={props.handleReset}
+                     handlePassword={props.handlePassword}
+                     handleUserReset={props.handleUserReset}
+                     onHandleSet={props.handleSet}
+                     localdata={props.localdata}
+                     userdata={props.userdata}
+                     itemdata={props.itemdata}
+                     testit={props.testit}
+                     localtesti={props.localtesti}
+                     usertesti={props.usertesti}
+                     inouttesti={props.inouttesti}
+                     itemtesti={props.itemtesti}
+                     placetesti={props.placetesti}
+                     inOutData={props.inOutData}>
+             <Outlet />
+            </Content>
+            <Menu localdata={props.localdata} 
+                  userdata={props.userdata}/>
+          </div>
+        </div>
       </div>
     </>
   )

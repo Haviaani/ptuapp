@@ -1,0 +1,11 @@
+.components {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    width: 98%;
+}

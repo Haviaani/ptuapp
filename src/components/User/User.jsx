@@ -1,50 +1,62 @@
 import './User.css'
 
+
 function User(props) {
 
   const checkPassword = (event) => {
-  
+ 
     event.preventDefault()
+
+    console.log(props.localdata)
   
     var form = document.getElementById('password')
         
-    if (form.password.value != form.passwordconfirm.value) {
+    console.log(form.password.value)
+    console.log(form.passwordconfirm.value)
+    console.log(props.userdata[props.localdata.nameid].password)
 
-      props.localdata.status = "Salasanat eivät täsmää"
-  
-    } if (form.password.value.length <= 7) {
-  
-      props.localdata.status = "Salasana on liian lyhyt"
+    let newlocaldata = {...props.localdata}
 
-    } else {
+    if (form.password.value === form.passwordconfirm.value) {
+      if (form.password.value != "") {
+        if (form.passwordold.value === props.userdata[props.localdata.nameid].password) {
+          newlocaldata.newpw1 = form.password.value 
+          newlocaldata.newpw2 = form.passwordconfirm.value
+          props.handlePassword(newlocaldata)
+          alert("Salasana vaihdettu!")
 
-      props.localdata.newpw1 = form.password.value 
-      props.localdata.newpw2 = form.passwordconfirm.value
+        } else if (form.password.value.length < 5) {  
+          alert("Salasana liian lyhyt. Vähimmäispituus 5")
 
-      props.localdata.status  = "Salasana on vaihdettu"
+         } else {
+           alert ("Vanha salasana ei täsmää")
+         }
 
+      } else {
+        alert ("Salasana ei voi olla tyhjä")
+      }
+
+    } else if (form.password.value !== form.passwordconfirm.value) {
+      alert("Salasanat eivät täsmää")
     }
-    
-    props.handlePassword()
       
   }
   
  
   return (
     <>
-          <div>
-        Tervetuloa {props.localdata.loginname1} {props.localdata.loginname2}
+      <div>
+        Tervetuloa {props.localdata.loginname} 
       </div>
 
       <div>
         <form onSubmit={checkPassword} id="password">
           Anna uusi salasana: <input type="password" name="password"></input> <br />
           Anna salasana uudestaan: <input type="password" name="passwordconfirm"></input> <br />
+          Anna vanha salasana: <input type="password" name="passwordold"></input> <br />
           <button type="submit">Aseta uusi salasana</button> <br /> <br />
         </form>
-        <input value={props.localdata.status}></input><br />
-        
-
+        <br />    
       </div>
     </>
   )

@@ -1,11 +1,12 @@
 import './Menu.css'
+import { NavLink } from 'react-router-dom'
 
-function Menu() {
+function Menu(props) {
 
   return (
     <>
-      <div>
-        MENU
+      <div className="menu">
+      <NavLink to="">Etusivu</NavLink> - <NavLink to="users">Käyttäjä</NavLink>
       </div>
     </>
   )
