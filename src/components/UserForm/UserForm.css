@@ -1,0 +1,44 @@
+.userform {
+    display: flex;
+    flex-direction: column;
+}
+
+.userform_row {
+    display: flex;
+}
+
+.userform_row > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.userform input , .userform select {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    outline: none;
+}
+
+.userform label {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+}
+
+
+.userbutton {
+    padding: 5px;
+    margin: 15px 5px 0px 5px;
+}
+
+.userbutton disable {
+    opacity: 50%;
+}

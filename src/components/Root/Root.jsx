@@ -19,6 +19,7 @@ function Root(props) {
                      localdata={props.localdata}
                      userdata={props.userdata}
                      itemdata={props.itemdata}
+                     commentdata={props.commentdata}
                      testit={props.testit}
                      localtesti={props.localtesti}
                      usertesti={props.usertesti}
@@ -29,7 +30,8 @@ function Root(props) {
              <Outlet />
             </Content>
             <Menu localdata={props.localdata} 
-                  userdata={props.userdata}/>
+                  userdata={props.userdata}
+                  handleReset={props.handleReset}/>
           </div>
         </div>
       </div>

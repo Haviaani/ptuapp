@@ -1,7 +1,16 @@
 import './Mainpage.css'
-import Items from '../Items/Items'
+import Items from '../Items'
 
 function Mainpage(props) {
+  
+  const currentDate = new Date()
+
+  // Filteröi näkyviin tapahtumiin vain tulevat tapahtumat.
+
+  const upcomingEvents = props.itemdata.filter(item => {
+    const eventDate = new Date(Date.parse(item.date))
+    return eventDate >= currentDate
+  })
 
   return (
     <>
@@ -9,9 +18,10 @@ function Mainpage(props) {
        <Items onHandleIn={props.onHandleIn}
               onHandleOut={props.onHandleOut}
               onHandleDelete={props.onHandleDelete}
-              itemdata={props.itemdata}
+              itemdata={upcomingEvents}
               inOutData={props.inOutData}
-              localdata={props.localdata} />
+              localdata={props.localdata}
+              commentdata={props.commentdata} />
       </div>
     </>
   )

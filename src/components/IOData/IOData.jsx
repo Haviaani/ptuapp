@@ -2,6 +2,8 @@ import './IOData.css'
 
 function IOData({data, ...props}) {
 
+  // Listaa käyttäjien ilmoittautumistiedot tapahtumalle
+
   const indata = data[props.id].indata
   const outdata = data[props.id].outdata
   const tododata = data[props.id].tododata
@@ -25,8 +27,12 @@ function IOData({data, ...props}) {
           <div className="tododata" key={index}>
             {item}
           </div> ))}
-      </div>    
+      </div>  
+      <div className="data_screen_info">
+        <div className="info">{props.itemdata[props.id].info}</div>
+      </div> 
     </div>
+    
   )
 }
 

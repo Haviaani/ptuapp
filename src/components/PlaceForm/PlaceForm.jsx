@@ -18,7 +18,9 @@ function PlaceForm(props) {
         id: "",
         place: "",
         address: "",
-        city: "",
+        postal: "",
+        precity: "",
+        shortname: "",
     }
 
     const {values, handleChange, handleSubmit} = useForm(submit, initialState, false)
@@ -27,10 +29,6 @@ function PlaceForm(props) {
         navigate(-1)
     }
 
-    const handleDelete = () => {
-        props.onPlaceDelete(values.id)
-        navigate(-1)
-    }
 
     return (
         <div>
@@ -67,10 +65,17 @@ function PlaceForm(props) {
 
                     <div className="placeform_row">
                         <div>
-                            <button onClick={handleCancel}>PERUUTA</button>
+                            <label htmlFor='shortname'>Lyhyt nimi</label>
+                            <input type='text' name='shortname' onChange={handleChange} value={values.shortname}/>
+                        </div>
+                    </div>
+
+                    <div className="placeform_row">
+                        <div>
+                            <button type="button" className="placebutton" onClick={handleCancel}>PERUUTA</button>
                         </div>
                         <div>
-                            <button 
+                            <button className="placebutton"
                                     disabled={values.place &&
                                               values.address &&
                                               values.postal &&
@@ -80,16 +85,6 @@ function PlaceForm(props) {
                             </button>
                         </div>
                     </div>
-
-                    { props.onPlaceDelete ?
-                    <div className="placeform_row">
-                        <div>
-                            <button  onClick={handleDelete}>POISTA</button>    
-                        </div>
-                        <div></div>
-                    </div>
-                    : null }
-
                 </div>
             </form>
         </div>

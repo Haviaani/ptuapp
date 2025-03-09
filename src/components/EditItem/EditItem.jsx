@@ -15,9 +15,11 @@ function EditItem(props) {
             <ItemForm onItemSubmit={props.onItemSubmit} 
                       onItemDelete={props.onItemDelete}
                       onInOutSubmit={props.onInOutSubmit}
+                      onCommentSubmit={props.onCommentSubmit}
                       inOutData={props.inOutData}
                       placedata={props.placedata}
                       userdata={props.userdata}
+                      commentdata={props.commentdata}
                       formData={data.item}/>
           </div>
         

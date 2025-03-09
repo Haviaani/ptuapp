@@ -5,7 +5,7 @@ function ErrorPage() {
   return (
 
 
-  <div>
+  <div className="error">
     <h1>OHHOH!</h1>
     Tapahtui virhe!
   </div>

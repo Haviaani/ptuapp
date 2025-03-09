@@ -7,6 +7,7 @@
     border-radius: 15px;
     border-color: black;
     border-style: solid;
+    border-width: 3px;
     background-color: lightgrey;
     height: 100%;
 }
@@ -63,7 +64,7 @@
 .spec_items_rowtop > div {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
+    
     width: 100%;
 }
 
@@ -95,7 +96,7 @@
     background-color: lightgrey;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    margin-top: 2px;
+    margin-top: 5px;
     margin-bottom: 2px;
 }
 
@@ -144,26 +145,94 @@
     text-decoration: none;
 }
 
-.spec_button1 {
+.spec_button {
+    width: 95%;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 8px;
+}
+  
+.spec_items_row form {
+    flex-direction: column;
+    width: 100%;
+}
+
+.spec_items_row textarea {
+    width: 95%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.spec_items_row button {
+    width: 95%;
+    margin-bottom: 2px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.spec_button1_false {
     font-size: 1.1em;
     font-weight: bold;
     margin: 0.4em;
     padding: 5px;
     border-radius: 12px;
+    border-color: black;
+    border-style:outset;
     max-width: 90%;
     background-color: lightgreen;
     text-align: center;
+    opacity: 60%;
   }
 
-.spec_button2 {
+.spec_button1_true {
     font-size: 1.1em;
     font-weight: bold;
     margin: 0.4em;
     padding: 5px;
     border-radius: 12px;
+    border-color: black;
+    border-style:outset;
     max-width: 90%;
-    background-color: lightcoral;
+    background-color: lightgreen;
+    text-align: center;
+}
+
+.spec_button1:enabled:active {
+    background-color: green;
+    border-style: inset;
+}
+
+.spec_button2_false {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: indianred;
+    text-align: center;
+    opacity: 60%;
+  }
+
+  .spec_button2_true {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: indianred;
     text-align: center;
   }
-  
-  
+
+  .spec_button2:enabled:active {
+    background-color: red;
+    border-style: inset;
+}

@@ -10,8 +10,39 @@ const useForm = (callback, initialState={}, resetOnSubmit=true) => {
         // Tallennetaan kenttään syötetty arvo ja kentän nimi välimuuttujiin
         const value = event.target.value
         const key = event.target.name
-        // Tallennetaan uusi arvo state-muuttujaan. Hakasulkeilla avaimeksi määritetään muuttujan arvo
-        setValues(prevValues => ({...prevValues, [key]: value}))
+
+    // Jos kenttä on timestart, lasketaan timeend ja regendt automaattisesti
+        if (key === 'timestart') {
+   
+        const start = new Date(`1970-01-01T${value}:00Z`);
+        const newRegEndT = start.toISOString().substring(11, 16); // Muotoa HH:mm
+        start.setMinutes(start.getMinutes() + 90);  // Lisää 90 minuuttia (1h 30min)
+        const newTimeEnd = start.toISOString().substring(11, 16); // Muotoa HH:mm
+
+        setValues(prevValues => ({
+            ...prevValues,
+            [key]: value,
+            timeend: newTimeEnd,
+            regendt: newRegEndT
+        }));
+
+    // Jos kenttä on date, lasketaan regendd automaattisesti        
+        } else if (key === 'date') {
+
+        const reg = new Date(value);
+        reg.setDate(reg.getDate() - 1)
+        const newRegEnd = reg.toISOString().split('T')[0]
+        
+        setValues(prevValues => ({
+            ...prevValues,
+            [key]: value,
+            regendd: newRegEnd
+        }));  
+
+        } else {
+        // Muu kenttä, käsitellään normaalisti
+        setValues(prevValues => ({ ...prevValues, [key]: value }));
+        }
     }
 
     // Submit-käsittelijä, joka estää oletustoiminnan ja kutsuu määriteltyä callback-funktiota

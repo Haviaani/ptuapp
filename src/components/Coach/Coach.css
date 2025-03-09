@@ -1,0 +1,44 @@
+.title {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: red;
+    color: white;
+    font-size: 1.2em;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 5px 0px 7px 0px;
+    margin-bottom: 4px;
+}
+
+.coachpage {
+    display: flex;
+    flex-direction: column;
+    padding: 3px 0px 0px 0px;
+    width: 100%;
+}
+
+.coach_row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.button_coach {
+    width: 70%;
+    margin: 4px 0px 3px 0px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.select_coach {
+    width: 70%;
+    margin: 3px 0px 4px 0px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+

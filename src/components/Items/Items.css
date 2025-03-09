@@ -8,11 +8,13 @@
     border-radius: 15px;
     border-color: black;
     border-style: solid;
+    border-width: 3px;
     background-color: lightgrey;
 }
 
 .items_rowtop {
     display: flex;
+    align-items: center;
     background-color: red;
     color: white;
     font-size: 1.2em;
@@ -25,8 +27,24 @@
 .items_rowtop > div {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
     width: 100%;
+}
+
+.left_top {
+    flex: 0.7;
+}
+
+.center_top {
+    flex: 0.1;
+}
+
+.center_top img {
+    height: 25px;
+    margin-bottom: -5px;
+}
+
+.right_top {
+    flex: 0.7;
 }
 
 .items_row {
@@ -35,20 +53,39 @@
     padding: 5px 0px 0px 0px;
 }
 
+.items_row img {
+    height: 25px;
+    margin-top: 12px;
+}
+
 .items_row > div {
     line-height: 0.8;
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
     width: 100%;
 }
 
-.left {
-    margin-right: 15px;
+.row_left {
+    flex: 0.7;
+    margin-left: 10px;
 }
 
-.right {
-    margin-left: 15px;
+.row_center {
+    flex: 0.2;
+    position: relative;
+}
+
+.row_right {
+    flex: 0.7;
+    margin-right: 10px;
+}
+
+.row_up {
+    padding: 3px;
+}
+
+.row_down {
+    padding: 3px;
 }
 
 .items_rowbottom {
@@ -106,7 +143,21 @@
     text-decoration: none;
 }
 
-.button1 {
+.button1_false {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style:outset;
+    max-width: 90%;
+    background-color: lightgreen;
+    text-align: center;
+    opacity: 60%;
+  }
+
+  .button1_true {
     font-size: 1.1em;
     font-weight: bold;
     margin: 0.4em;
@@ -119,12 +170,17 @@
     text-align: center;
   }
 
-.button1:active {
+.button1_false:enabled:active {
     background-color: green;
     border-style: inset;
 }
 
-.button2 {
+.button1_true:enabled:active {
+    background-color: green;
+    border-style: inset;
+}
+
+.button2_false {
     font-size: 1.1em;
     font-weight: bold;
     margin: 0.4em;
@@ -133,13 +189,85 @@
     border-color: black;
     border-style: outset;
     max-width: 90%;
-    background-color: lightcoral;
+    background-color: indianred;
+    text-align: center;
+    opacity: 60%;
+  }
+
+.button2_true {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: indianred;
     text-align: center;
   }
 
-.button2:active {
+.button2_false:enabled:active {
     background-color: red;
+    color: black;
+    border-style: inset;
+}
+
+.button2_true:enabled:active {
+    background-color: red;
+    color: black;
     border-style: inset;
 }
   
+.comments_amount {
+    display: block;   
+    position: absolute;   
+    width: fit-content;   
+    height: fit-content;    
+    top: 0px;
+    right: 8px;
+    background-color: black;    
+    border-radius: 50%;  
+    padding: 4px 5px 4px 5px;     
+    color: white;                     
+    font-size: 12px;                           
+    text-align: center;                    
+    font-weight: bold;                        
+  }
   
+  a.active .comments_amount {
+    background-color: black;                 
+    color: white;                              
+  } 
+
+.button1:disabled {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: grey;
+    color: black;
+    text-align: center;
+    opacity: 100%;
+    cursor: not-allowed;
+}
+
+.button2:disabled {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0.4em;
+    padding: 5px;
+    border-radius: 12px;
+    border-color: black;
+    border-style: outset;
+    max-width: 90%;
+    background-color: grey;
+    color: black;
+    text-align: center;
+    opacity: 100%;
+    cursor: not-allowed;
+}

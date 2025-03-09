@@ -3,27 +3,41 @@
     flex-direction: column;
 }
 
-iplaceform_row {
+.placeform_row {
     display: flex;
 }
 
 .placeform_row > div {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
-    margin: 0.5rem 0.3rem;
     width: 100%;
 }
 
-.placeform input, .placeform select {
-    padding: 0.5rem;
+.placeform input , .placeform select {
+    padding: 5px;
     border: 1px solid black;
-    border-radius: 0.3rem;
+    border-radius: 5px;
     font-size: 1.2rem;
     outline: none;
 }
 
 .placeform label {
     font-size: 0.8rem;
-    margin-bottom: 0.3rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+}
+
+.placebutton {
+    padding: 5px;
+    margin: 15px 5px 0px 5px;
+}
+
+.placebutton disable {
+    opacity: 50%;
 }

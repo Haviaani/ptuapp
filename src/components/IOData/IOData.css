@@ -20,9 +20,27 @@
     width: 98%;
 }
 
+.data_screen_info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+    background-color: white;
+    border-radius: 12px;
+    margin-top: 8px;
+    padding: 3px 4px 3px 4px;
+    height: fit-content;
+    width: 98%;
+}
+
+.info {
+    padding: 3px 4px 3px 4px;
+    font-weight: normal;
+}
+
 .indata {
     height: fit-content;
-    margin: 3px;
+    margin: 3px; 
     border-radius: 12px;
     padding: 5px 10px 5px 10px;
     background-color: lightgreen;

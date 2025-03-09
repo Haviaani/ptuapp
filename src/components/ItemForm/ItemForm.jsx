@@ -6,29 +6,32 @@ function ItemForm(props) {
 
     const navigate = useNavigate()
 
-    const dateToday = new Date().toLocaleDateString("fi-FI")
-
     const submit = () => {
         let storedValues = Object.assign({}, values)
         let x = 1
         const index = Object.keys(props.placedata).findIndex(key => key = storedValues.place)
-        storedValues.id = storedValues.id ? storedValues.id : x = 0
-        storedValues.id = storedValues.id ? storedValues.id : props.itemdata.length.toString()
+        if (props.copy === 1) {
+            storedValues.id = storedValues.id ? props.itemdata.length.toString() : props.itemdata.length.toString() 
+        } else {
+            storedValues.id = storedValues.id ? storedValues.id : x = 0
+            storedValues.id = storedValues.id ? storedValues.id : props.itemdata.length.toString()
+        }
+        let id = storedValues.id
         storedValues.address = props.placedata[index].address
         storedValues.city = props.placedata[index].city
         storedValues.usersIn = 0
         storedValues.usersOut = 0
         props.onItemSubmit(storedValues)
 
-        if (x === 0) {
-        let newinoutdata = JSON.parse(JSON.stringify(props.inOutData))
-        let index = props.itemdata.length.toString()
-        newinoutdata.push({id: index, indata: ["IN:",], outdata: ["OUT:",], tododata: ["?:",]})
+        if (x === 0 || props.copy === 1) {
+        let newinoutdata = {id: id, indata: ["IN:"], outdata: ["OUT:"], tododata:["?:"]}
             for (let i = 0; i < props.userdata.length; i++) {
-                console.log(props.userdata[i].name2)
-                newinoutdata[index].tododata.push(props.userdata[i].name2)
-        }
+                newinoutdata.tododata.push(props.userdata[i].name2)
+            }            
+        let newcommentdata ={id: id, comments: []}
+  
         props.onInOutSubmit(newinoutdata)
+        props.onCommentSubmit(newcommentdata)
         }
 
         navigate(-1)
@@ -37,16 +40,19 @@ function ItemForm(props) {
     let places = []
 
     for (let i = 0; i < props.placedata.length; i++) {
-        places.push(props.placedata[i].place)
+        places.push(props.placedata[i].shortname)
     }
 
     const initialState = props.formData ? props.formData : {
         id: "",
-        eventname: "",
+        event: "",
+        event2: "",
         timestart: "",
         timeend: "",
         date: "",
         place: "",
+        regendd: "",
+        regendt: "",
         address: "",
         city: "",
         usersIn: "",
@@ -57,11 +63,6 @@ function ItemForm(props) {
     const {values, handleChange, handleSubmit} = useForm(submit, initialState, false)
 
     const handleCancel = () => {
-        navigate(-1)
-    }
-
-    const handleDelete = () => {
-        props.onItemDelete(values.id)
         navigate(-1)
     }
 
@@ -99,6 +100,13 @@ function ItemForm(props) {
 
                     <div className="itemform_row">
                         <div>
+                            <label htmlFor='date'>Päivämäärä</label>
+                            <input type='date' name='date' onChange={handleChange} value={values.date}/>
+                        </div>
+                    </div>
+
+                    <div className="itemform_row">
+                        <div>
                             <label htmlFor='timestart'>Alkaa</label>
                             <input type='time' name='timestart' onChange={handleChange} value={values.timestart} />
                         </div>
@@ -109,14 +117,7 @@ function ItemForm(props) {
                             <label htmlFor='timeend'>Loppuu</label>
                             <input type='time' name='timeend' onChange={handleChange} value={values.timeend}/>
                         </div>
-                    </div>
-
-                    <div className="itemform_row">
-                        <div>
-                            <label htmlFor='date'>Päivämäärä</label>
-                            <input type='date' name='date' onChange={handleChange} value={values.date}/>
-                        </div>
-                    </div>
+                    </div> 
 
                     <div className="itemform_row">
                         <div>
@@ -146,10 +147,10 @@ function ItemForm(props) {
                     
                     <div className="itemform_row">
                         <div>
-                            <button onClick={handleCancel}>PERUUTA</button>
+                            <button type="button" className="itembutton" onClick={handleCancel}>PERUUTA</button>
                         </div>
                         <div>
-                            <button 
+                            <button className="itembutton"
                                     disabled={values.event &&
                                               values.timestart &&
                                               values.timeend &&
@@ -161,14 +162,6 @@ function ItemForm(props) {
                         </div>
                     </div>
 
-                    { props.onItemDelete ?
-                    <div className="itemform_row">
-                        <div>
-                            <button  onClick={handleDelete}>POISTA</button>    
-                        </div>
-                        <div></div>
-                    </div>
-                    : null }
 
                 </div>
             </form>

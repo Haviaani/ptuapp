@@ -1,0 +1,74 @@
+.userpage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3px 0px 3px 0px;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    background-color: red;
+    color: white;
+    font-size: 1.2em;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 5px 0px 7px 0px;
+    margin-bottom: 4px;
+}
+
+.user_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.inout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.inout div {
+    padding: 3px;
+}
+
+.passwordform {
+    width: 97%;
+    background-color: whitesmoke;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.passwordform input {
+    margin: 2px 0px 5px 0px;
+    padding: 4px;
+    border-radius: 10px;
+    border-color: black;
+}
+
+.passwordform img {
+    height: 20px;
+}
+
+.button_user {
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.changemessage {
+    padding: 5px;
+    background-color: indianred;
+    border-radius: 10px;
+    justify-items: center;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 70%;
+}

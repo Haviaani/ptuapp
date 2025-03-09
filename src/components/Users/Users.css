@@ -1,11 +1,13 @@
 .components {
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
-    border-width: 1px;
+    justify-items: center;
+    font-weight: bold;
+    margin: 0.25em;
+    width: 95%;
+    border-radius: 15px;
+    border-color: black;
     border-style: solid;
-    padding: 5px;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    width: 98%;
+    border-width: 3px;
+    background-color: lightgrey;
 }

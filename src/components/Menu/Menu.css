@@ -8,5 +8,13 @@
     text-align: center;    
     background-color: white;
     color: black;
-    height: 80px;
+    height: 60px;
+}
+
+.buttons {
+
+}
+
+.buttons img {
+    height: 30px;
 }

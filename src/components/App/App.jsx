@@ -1,287 +1,208 @@
-import AppRouter from '../AppRouter'
 import React from 'react'
 import './App.css'
-import logo from '../../assets/images/ptu.png'
-
+import AppRouter from '../AppRouter'
+import Login from '../Login'
 import useLocalStorage from '../../utils/useLocalStorage.js'
-import users from '../../data/users.js'
-import testdata from '../../data/items.js'
-import inout from '../../data/inout.js'
-import places from '../../data/places.js'
-
-import firebase from './firebase.js'
-import { collection, deleteDoc, doc, getFirestore, onSnapshot, orderBy, query, setDoc  } from 'firebase/firestore'
-import { useEffect } from 'react'
-import { useState } from 'react'
-
-
-
-
+import useFirestoreData from '../../utils/useFirestoreData.js'
+import firebase, {auth} from '../../utils/firebase.js'
+import { deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
+import { signOut } from 'firebase/auth'
+import bcrypt from 'bcryptjs'
 
 function App() {
 
+  // Localdatan "tyhjät" arvot.
+
   const initialdata = {
     signin: 0,
-    nameok: -1,
     nameid: -1,
-    passwordok: -2,
-    passwordid: -2,
     loginid: -1,
     loginname: "",
+    password: "",
     name: "",
-    status: "",
     newpw1: "",
     newpw2: "",
     accesslevel: 1,
   }
   
+  // Localdata toimii paikallisesti ja pitää kirjauksen. Muut datat firestoressa.
+
   const [localdata, setLocaldata, resetLocaldata] = useLocalStorage('localdata', initialdata);
 
-  const [userdata, setUserdata, resetUserdata] = useLocalStorage('userdata', users);
+  const [itemdata, setItemdata] = useFirestoreData('itemdata')
 
-  const [itemdata, setItemdata, resetItemdata] = useLocalStorage('itemdata', testdata);
+  const [userdata, setUserdata] = useFirestoreData('userdata')
 
-  const [inOutData, setInOutData, resetInOutData] = useLocalStorage('inoutdata', inout);
+  const [inOutData, setInOutData] = useFirestoreData('inOutData')
 
-  const [placedata, setPlacedata, resetPlacesdata] = useLocalStorage('placesdata', places);
+  const [placedata, setPlacedata] = useFirestoreData('placedata')
 
-  // const [data, setData] = useState(testdata);
+  const [commentdata, setCommentdata] = useFirestoreData('commentdata')
 
-  // const [userdata2, setUserdata2] = useState([])
+  const firestore = getFirestore(firebase)
 
-  // const firestore = getFirestore(firebase)
+  // Tallentaa muualla päivitetyt localdatat.
 
-  useEffect(() => {}, [localdata, userdata, itemdata, inOutData, placedata]);
-
-
-  let newlocaldata = {...localdata}
-
-  const handleSubmitSignIn = (event) => {
-    if (event) {
-        event.preventDefault()
-    }
-
-    if (localdata.nameok == 1) {
-
-      if (localdata.passwordok == 1) {
-    
-        if (localdata.nameid+1 == localdata.passwordid+1) {
-        newlocaldata.signin = 1
-
-        setLocaldata(newlocaldata);
-
-        let x = localdata.nameid
-          
-        newlocaldata.loginid = userdata[x].id
-        newlocaldata.loginname = userdata[x].name1
-        newlocaldata.accesslevel = userdata[x].accesslevel
-        newlocaldata.name = userdata[x].name2
-
-        setLocaldata(newlocaldata);
-        
-        } else {
-          alert('VÄÄRÄ TUNNUS/SALASANA')
-        }
-
-      } else {
-        alert('VÄÄRÄ SALASANA')
-      }
-
-    } else {
-      alert('VÄÄRÄ TUNNUS')
-    }
-    
-}
-
-  const handleChangeSignInName = (event) => {
-    for (let i = 0; i < userdata.length; i++) {
-      if (event.target.value == userdata[i].login) {
-        newlocaldata.nameid = [i]
-        newlocaldata.nameok = 1
-      }
-    }
-    setLocaldata(newlocaldata);
+  const handleLocaldata = (newlocaldata) => {
+    setLocaldata(newlocaldata)
   }
 
-  const handleChangeSignInPW = (event) => {
-    for (let i = 0; i < userdata.length; i++) {
-      if (event.target.value == userdata[i].password) {
-        newlocaldata.passwordid = [i]
-        newlocaldata.passwordok = 1
-      }
-    }
-    setLocaldata(newlocaldata);
-  }
+  // Tallentaa uuden salasanan suolaamisen ja suojauksen kera.
 
-
-  const handlePassword = (newlocaldata) => {
+  const handlePassword = async (newlocaldata) => {
+    setLocaldata(newlocaldata)
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(localdata.password, salt)
     let x = localdata.nameid
+    let newuserdata = JSON.parse(JSON.stringify(userdata[x]))
+    newuserdata.password = hashPassword
+    handleUserSubmit(newuserdata)
+  }
+
+  // Kirjaa käyttäjän ulos tyhjentämällä localdatan. Varmistaa ensin, että
+  // käyttäjätiedot ovat ajantasalla.
+
+  const handleReset = async () => {
     let newuserdata = JSON.parse(JSON.stringify(userdata))
-    newuserdata[x].password = newlocaldata.newpw1
-    let newdata = JSON.parse(JSON.stringify(newuserdata))
-        
-    setUserdata(newdata)
+    handleUserSubmit(newuserdata)
+    signOut(auth)
+    resetLocaldata()
   }
 
-  const handleReset = () => {
-    let newuserdata = JSON.parse(JSON.stringify(userdata))
-    setUserdata(newuserdata)
-    resetLocaldata();
+  // Tapahtumien, tapahtumapaikkojen ja käyttäjien päivitykset firestoreen.
+  // Poistot eivät ole vielä kenenkään käytössä sovelluksessa. Poiston saa tehtyä
+  // toistaiseksi vain firebase admin.
+
+  const handleItemDelete = async (id) => {
+    await deleteDoc(doc(firestore, 'itemdata', id))
   }
 
-  const handleUserReset = () => {
-    resetUserdata();
+  const handleItemSubmit = async (newitem) => {
+    await setDoc(doc(firestore, 'itemdata', newitem.id), newitem)
   }
 
-  const handleItemDelete = (id) => {
-    let copy = itemdata.slice()
-    copy = copy.filter(item => item.id !== id)
-    setItemdata(copy)
+  const handlePlaceDelete = async (id) => {
+    await deleteDoc(doc(firestore, 'placedata', id))
   }
 
-  const handleItemSubmit = (newitem) => {
-    let copy = itemdata.slice()
-    
-    const index = copy.findIndex(item => item.id === newitem.id)
-    if (index >= 0) {
-      copy[index] = newitem
-    } else {
-      copy.push(newitem)
-    }
-
-    setItemdata(copy)
+  const handlePlaceSubmit = async (newitem) => {
+    await setDoc(doc(firestore, 'placedata', newitem.id), newitem)
+  }
+  const handleUserDelete = async (id) => {
+    await deleteDoc(doc(firestore, 'userdata', id))
   }
 
-  const handlePlaceDelete = (id) => {
-    let copy = placedata.slice()
-    copy = copy.filter(item => item.id !== id)
-    setPlacedata(copy)
-  }
-
-  const handlePlaceSubmit = (newplace) => {
-    let copy = placedata.slice()
-    
-    const index = copy.findIndex(item => item.id === newplace.id)
-    if (index >= 0) {
-      copy[index] = newplace
-    } else {
-      copy.push(newplace)
-    }
-
-    setPlacedata(copy)
+  const handleUserSubmit = async (newitem) => {
+    await setDoc(doc(firestore, 'userdata', newitem.id), newitem)
   }
   
-  const handleInOutSubmit = (copy) => {
-       setInOutData(copy)
+  const handleInOutSubmit = async (newitem) => {
+    await setDoc(doc(firestore, 'inOutData', newitem.id), newitem)
   }
 
-  // Alemman voi poistaa lopuksi
-  const handleTypeSubmit = (type) => {
-    let copy = typelist.slice()
-    copy.push(type)
-    copy.sort()
-    setTypelist(copy)
+  const handleCommentSubmit = async (newitem) => {
+    await setDoc(doc(firestore, 'commentdata', newitem.id), newitem)
   }
+
+  // handleIn ja handleOut tapahtuvat, kun tapahtumiin ilmoittaudutaan sisään
+  // tai ulos. Molemmat tarkistavat kirjautuneen käyttäjän id:n perusteella, että
+  // onko käyttäjä jo tapahtuman In- tai Out-datassa vai vielä ToDo-datassa. Päivittää
+  // myös käyttäjän omiin tilastoihin aktiivisuusseurannan In- tai Out-määrää.
 
   const handleIn = (id) => {
     let newitemdata = JSON.parse(JSON.stringify(itemdata))
     let newinoutdata = JSON.parse(JSON.stringify(inOutData))
+    let newuserdata = JSON.parse(JSON.stringify(userdata))
     let x = 0
+    let userId = localdata.nameid
 
     if (newinoutdata[id].indata.includes(localdata.name)) {    
-      console.log("Löytyy jo tästä." + x)    
       x = 1
 
       } else if (newinoutdata[id].outdata.includes(localdata.name)) {
-          console.log("Ei löytynyt tästä, mutta löytyy toisesta. Pitää poistaa" + x)
           x = 0
-          if (newitemdata[id].usersOut > -1) {
-            newitemdata[id].usersOut = newitemdata[id].usersOut - 1
-            setItemdata(newitemdata);
-          }
-
           if (x === 0) {
             let targetIndex = newinoutdata[id].outdata.indexOf(localdata.name)
             if (targetIndex !== -1) {
               newinoutdata[id].outdata.splice(targetIndex, 1)
-              console.log("Lisätään myös tähän.")
-              newitemdata[id].usersIn = newitemdata[id].usersIn + 1
               newinoutdata[id].indata.push(localdata.name)
-        }
-      }
+              newitemdata[id].usersIn = newinoutdata[id].indata.length - 1
+              newuserdata[userId].in = newuserdata[userId].in + 1
+              handleItemSubmit(newitemdata[id]);
+              handleInOutSubmit(newinoutdata[id]);  
+              handleUserSubmit(newuserdata[userId]);
+            }
+          } 
 
-      setItemdata(newitemdata);
-      setInOutData(newinoutdata);   
+          if (newitemdata[id].usersOut > -1) {
+            newitemdata[id].usersOut = newinoutdata[id].outdata.length - 1
+            newuserdata[userId].out = newuserdata[userId].out - 1
+            handleItemSubmit(newitemdata[id]);
+            handleUserSubmit(newuserdata[userId]);
+          }
 
       } else {
-        console.log("Lisätään tähän.")
-        newitemdata[id].usersIn = newitemdata[id].usersIn + 1
         newinoutdata[id].indata.push(localdata.name)
+        newitemdata[id].usersIn = newinoutdata[id].indata.length - 1
+        newuserdata[userId].in = newuserdata[userId].in + 1
         let targetIndex = newinoutdata[id].tododata.indexOf(localdata.name)
           if (targetIndex !== -1) {
             newinoutdata[id].tododata.splice(targetIndex, 1)
           }
-        setItemdata(newitemdata);
-        setInOutData(newinoutdata);     
+        handleItemSubmit(newitemdata[id]);
+        handleUserSubmit(newuserdata[userId]);
+        handleInOutSubmit(newinoutdata[id]);   
       } 
-      setItemdata(newitemdata);
-      setInOutData(newinoutdata);  
   }
-  
        
   const handleOut = (id) => { 
     let newitemdata = JSON.parse(JSON.stringify(itemdata))
     let newinoutdata = JSON.parse(JSON.stringify(inOutData))
+    let newuserdata = JSON.parse(JSON.stringify(userdata))
     let x = 0
+    let userId = localdata.nameid
     
     if (newinoutdata[id].outdata.includes(localdata.name)) {   
-      console.log("Löytyy jo tästä.")
       x = 1   
 
     } else if (newinoutdata[id].indata.includes(localdata.name)) {
-        console.log("Ei löytynyt tästä, mutta löytyy toisesta. Pitää poistaa")
         x = 0
-        if (newitemdata[id].usersIn > -1) {
-        newitemdata[id].usersIn = newitemdata[id].usersIn - 1
-        setItemdata(newitemdata);
-        }
-
         if (x === 0) {
           let targetIndex = newinoutdata[id].indata.indexOf(localdata.name)
           if (targetIndex !== -1) {
             newinoutdata[id].indata.splice(targetIndex, 1)
-            console.log("Lisätään myös tähän.")  
-            newitemdata[id].usersOut = newitemdata[id].usersOut + 1 
             newinoutdata[id].outdata.push(localdata.name)
+            newitemdata[id].usersOut = newinoutdata[id].outdata.length - 1
+            newuserdata[userId].out = newuserdata[userId].out + 1
+            handleItemSubmit(newitemdata[id]);
+            handleInOutSubmit(newinoutdata[id]);
+            handleUserSubmit(newuserdata[userId]);            
           }
         }
-        setItemdata(newitemdata);
-        setInOutData(newinoutdata);
+
+        if (newitemdata[id].usersIn > -1) {
+          newitemdata[id].usersIn = newinoutdata[id].indata.length - 1
+          newuserdata[userId].in = newuserdata[userId].in - 1
+          handleItemSubmit(newitemdata[id]);
+          handleUserSubmit(newuserdata[userId]);
+          }
 
       } else {
-        console.log("Lisätään tähän.")  
-        newitemdata[id].usersOut = newitemdata[id].usersOut + 1 
         newinoutdata[id].outdata.push(localdata.name)
+        newitemdata[id].usersOut = newinoutdata[id].outdata.length - 1
+        newuserdata[userId].out = newuserdata[userId].out + 1
         let targetIndex = newinoutdata[id].tododata.indexOf(localdata.name)
           if (targetIndex !== -1) {
             newinoutdata[id].tododata.splice(targetIndex, 1)
           }
-        setItemdata(newitemdata);
-        setInOutData(newinoutdata);   
+        handleItemSubmit(newitemdata[id]);
+        handleInOutSubmit(newinoutdata[id]);  
+        handleUserSubmit(newuserdata[userId]); 
       }
-      setItemdata(newitemdata);
-      setInOutData(newinoutdata);
-  }
-  
-  
-
-  const testit = () => {
-    console.log("In: " + itemdata[0].usersIn + " Out " + itemdata[0].usersOut + " In: " + inOutData[0].indata + " Out: " + inOutData[0].outdata)
-    console.log("In: " + itemdata[1].usersIn + " Out " + itemdata[1].usersOut + " In: " + inOutData[1].indata + " Out: " + inOutData[1].outdata)
-    console.log(userdata[2].password)
-    console.log('-----')
   }
 
+  // Testereitä, joilla admin voi tarkistella dataa virheiden sattuessa.
+ 
   const localtesti = () => {
     console.log(localdata)
   }
@@ -302,32 +223,38 @@ function App() {
     console.log(placedata)
   }
 
+  const commenttesti = () => {
+    console.log(commentdata)
+  }
+
   if (localdata.signin == 1) {
 
   return (
     <>
       <AppRouter handleReset={handleReset}
-                 handleUserReset={handleUserReset}
-                 handlePassword={handlePassword}
+                 onHandlePassword={handlePassword}
                  onItemSubmit={handleItemSubmit}
                  onItemDelete={handleItemDelete}
                  onPlaceSubmit={handlePlaceSubmit}
                  onPlaceDelete={handlePlaceDelete}
-                 onTypeSubmit={handleTypeSubmit}
+                 onUserSubmit={handleUserSubmit}
+                 onUserDelete={handleUserDelete}
                  onInOutSubmit={handleInOutSubmit}
+                 onCommentSubmit={handleCommentSubmit}
                  onHandleIn={handleIn}
                  onHandleOut={handleOut}
-                 testit={testit}
                  localtesti={localtesti}
                  usertesti={usertesti}
                  inouttesti={inouttesti}
                  itemtesti={itemtesti}
                  placetesti={placetesti}
+                 commenttesti={commenttesti}
                  localdata={localdata}
                  userdata={userdata}
                  itemdata={itemdata}
                  inOutData={inOutData}
-                 placedata={placedata} />
+                 placedata={placedata}
+                 commentdata={commentdata} />
     </>
   ) 
 
@@ -335,28 +262,9 @@ function App() {
 
   return (
     <>
-    <div className="login">
-      <div className="login_title">
-        <h1>PTU-P17</h1><br />
-        IlmoÄppi
-      </div>
-
-      <div className="login_img">
-        <img src={logo} alt="logo" />
-      </div>
-           
-      <div className="login_form">
-        <form onSubmit={handleSubmitSignIn}>
-         <label>Anna käyttäjätunnus</label><br />
-          <input type='text' id='tunnus' onChange={handleChangeSignInName}></input><br />
-          <br />
-          <label>Anna sanasana</label><br />
-          <input type='password' id='salasana' onChange={handleChangeSignInPW}></input><br />
-          <br /><br /><br />
-          <button className="login_button" type='submit'>Kirjaudu sisään</button>
-        </form>
-      </div>
-    </div>
+      <Login onHandleLocaldata={handleLocaldata}
+             localdata={localdata}
+             userdata={userdata} />
     </>
   )
   }

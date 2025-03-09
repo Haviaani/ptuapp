@@ -10,20 +10,34 @@
 .itemform_row > div {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
-    margin: 0.5rem 0.3rem;
     width: 100%;
 }
 
-.itemform input, .itemform select {
-    padding: 0.5rem;
+.itemform input , .itemform select {
+    padding: 5px;
     border: 1px solid black;
-    border-radius: 0.3rem;
+    border-radius: 5px;
     font-size: 1.2rem;
     outline: none;
 }
 
 .itemform label {
     font-size: 0.8rem;
-    margin-bottom: 0.3rem;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+}
+
+.itembutton {
+    padding: 5px;
+    margin: 15px 5px 0px 5px;
+}
+
+.itembutton disable {
+    opacity: 50%;
 }
