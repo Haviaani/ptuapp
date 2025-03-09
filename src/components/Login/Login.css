@@ -124,3 +124,8 @@ body {
     background-color: red;
     color: white;
 }
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+}

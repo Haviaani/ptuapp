@@ -1,5 +1,6 @@
 import './Admin.css'
 import { useState } from 'react'
+import bcrypt from 'bcryptjs'
 
 function Admin(props) {
 
@@ -26,10 +27,12 @@ function Admin(props) {
 
   }
 
-  const handleConfim = () => {
+  const handleConfim = async () => {
     const indexUser = props.userdata.findIndex(key => key.name1 === selectedUser)
     let newuserdata = JSON.parse(JSON.stringify(props.userdata[indexUser]))
-    newuserdata.password = newuserdata.login
+    const salt = await bcrypt.genSalt(10)
+    const hashPassword = await bcrypt.hash(newuserdata.login, salt)
+    newuserdata.password = hashPassword
     props.onUserSubmit(newuserdata)
     setShowForm(false)
     setSelectedUser("")
