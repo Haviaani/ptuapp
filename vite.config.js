@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from "vite-plugin-pwa"
+import manifest from './manifest.json'
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    historyApiFallback: true,
-  },
+  plugins: [react(),
+    VitePWA({ manifest: manifest })],
 });
