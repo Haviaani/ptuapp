@@ -19,6 +19,8 @@ function Login (props) {
     login(loginform.login.value, loginform.password.value)
   }
 
+  // Yleinen auth-tunnus kaikille sisäänkirjautuneille.
+
   const firebaseAuth = () => {
     const auth = getAuth()
     const email = "heiwis82@gmail.com"
@@ -40,16 +42,13 @@ function Login (props) {
 
     try {
 
-      console.log("Etsitään käyttäjää:", username);
-
       const q = query(collection(firestore, 'userdata'), where('login', '==', username))
       const querySnapshot = await getDocs(q)
 
-      console.log(querySnapshot.size);
-      console.log(querySnapshot);
-
       const userDoc = querySnapshot.docs[0]
       const userData = userDoc.data()
+
+      // Vertaa salasanaa cryptattuna
 
       const passwordMatch = await bcrypt.compare(password, userData.password)
   
@@ -86,7 +85,9 @@ return (
     <>
     <div className="login">
       <div className="login_title">
-        <h1>PTU-P17</h1><br />
+        <div className="login_titletext">
+            PTU-P17
+        </div><br />
         IlmoÄppi
       </div>
 

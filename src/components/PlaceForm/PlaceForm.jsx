@@ -79,7 +79,7 @@ function PlaceForm(props) {
                                     disabled={values.place &&
                                               values.address &&
                                               values.postal &&
-                                              values.precity ? "" : 'true'} 
+                                              values.precity ? "" : true} 
                                     type='submit'>
                                     { props.formData ? "TALLENNA" : "LISÄÄ" }
                             </button>

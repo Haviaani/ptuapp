@@ -9,11 +9,15 @@ function UserForm(props) {
 
     const submit = async () => {
         let storedValues = Object.assign({}, values)
+        let x = 1
+        storedValues.id = storedValues.id ? storedValues.id : x = 0     
         storedValues.id = storedValues.id ? storedValues.id : props.userdata.length.toString()
         storedValues.name1 = storedValues.firstname + " " + storedValues.lastname
         storedValues.name2 = storedValues.firstname + " " + storedValues.nro
         storedValues.login = storedValues.firstname + storedValues.nro
 
+        // Lisää salasanaan suolaa ja salauksen. Jos käyttäjä on uusi.
+        if (x === 0) {
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(storedValues.firstname + storedValues.nro, salt)
 
@@ -21,8 +25,9 @@ function UserForm(props) {
         storedValues.in = 0
         storedValues.out = 0
         storedValues.accesslevel = 1
+        }
 
-        props.onUserSubmit(storedValues)
+        props.onUserSubmit(storedValues)        
 
         navigate(-1)
     }
@@ -103,7 +108,7 @@ function UserForm(props) {
                                     disabled={values.firstname &&
                                               values.lastname &&
                                               values.nro &&
-                                              values.role ? "" : 'true'} 
+                                              values.role ? "" : true} 
                                     type='submit'>
                                     { props.formData ? "TALLENNA" : "LISÄÄ" }
                             </button>

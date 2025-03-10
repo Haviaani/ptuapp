@@ -143,11 +143,11 @@ function AppRouter(props) {
                                                onPlaceDelete={props.onPlaceDelete}
                                                placedata={props.placedata} /> },
 
-        { path: "coach", element: <Coach />, loader: () => { return props.localdata, props.userdata} },
+        { path: "coach", element: <Coach /> },
 
-        { path: "admin", element: <Admin />, loader: () => { return props.localdata, props.userdata} },
+        { path: "admin", element: <Admin /> },
 
-        { path: "user", element: <User />, loader: () => { return props.localdata, props.userdata} },
+        { path: "user", element: <User /> },
 
         { path: "users", element: <Users localdata={props.localdata}
                                          userdata={props.userdata}
@@ -162,7 +162,7 @@ function AppRouter(props) {
                                          itemtesti={props.itemtesti}
                                          placetesti={props.placetesti}
                                          commenttesti={props.commenttesti} />,
-                                         loader: () => { return props.localdata, props.userdata} },                                         
+                                         loader: () => { return props.localdata} },                                         
 
         { path: "adduser", element: <AddUser userdata={props.userdata}
                                              onUserSubmit={props.onUserSubmit}

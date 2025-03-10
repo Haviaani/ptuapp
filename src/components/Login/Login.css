@@ -67,8 +67,9 @@ body {
     font-style: normal;
 }
 
-.login_title h1 {
+.login_titletext {
     margin-top: 0;
+    font-size: 50px;
 }
 
 .login_img {
@@ -80,7 +81,7 @@ body {
 }
 
 .login_img img {
-    width: 80%;
+    width: 70%;
 }
 
 .login_txt {
@@ -128,4 +129,13 @@ body {
 input[type="text"],
 input[type="password"] {
     width: 100%;
+}
+
+.loginmessage {
+    text-align: center;
+    font-weight: bold;
+    background-color: indianred;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
 }

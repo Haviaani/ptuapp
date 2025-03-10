@@ -6,6 +6,13 @@ function ItemForm(props) {
 
     const navigate = useNavigate()
 
+    // Tarkistaa onko propseina saatu copy, eli kopiointitieto, jolloin 
+    // kyseessä on kopiointi ja antaa silloin uuden id:n lengthin mukaan.
+    
+    // Hakee uudelle tai kopioidulle tapahtumalle (itemille) osoitetiedot syötetyn paikan (place)
+    // mukaan. Lisäksi hakee jokaisen käyttäjän ToDo dataan ja asettaa IN ja OUT tyhjiksi, 
+    // sekä tekee myös tyhjän commentdatan tapahtumalle.
+
     const submit = () => {
         let storedValues = Object.assign({}, values)
         let x = 1
@@ -19,8 +26,12 @@ function ItemForm(props) {
         let id = storedValues.id
         storedValues.address = props.placedata[index].address
         storedValues.city = props.placedata[index].city
-        storedValues.usersIn = 0
-        storedValues.usersOut = 0
+
+        if (x === 0) {
+            storedValues.usersIn = 0
+            storedValues.usersOut = 0
+        } 
+
         props.onItemSubmit(storedValues)
 
         if (x === 0 || props.copy === 1) {
@@ -36,6 +47,8 @@ function ItemForm(props) {
 
         navigate(-1)
     }
+
+    // Tekee listan tapahtumapaikan select-inputille.
 
     let places = []
 
@@ -155,7 +168,7 @@ function ItemForm(props) {
                                               values.timestart &&
                                               values.timeend &&
                                               values.date &&
-                                              values.place ? "" : 'true'} 
+                                              values.place ? "" : true} 
                                     type='submit'>
                                     { props.formData ? "TALLENNA" : "LISÄÄ" }
                             </button>

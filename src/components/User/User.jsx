@@ -1,5 +1,6 @@
 import './User.css'
 import { useState } from 'react'
+import { useLoaderData } from 'react-router-dom'
 import bcrypt from 'bcryptjs'
 import eye from '../../assets/images/eye.svg'
 import eyeoff from '../../assets/images/eyeoff.svg'
@@ -11,7 +12,9 @@ function User(props) {
   const [inputType, setInputType] = useState ("password")
   const [picture, setPicture] = useState(eyeoff)
 
-  // hadnleMouse toiminnot muuttavat salasanojen *** tiedot näkyviksi painettaessa.
+  const loaderdata = useLoaderData()
+
+  // handleMouse toiminnot muuttavat salasanojen *** tiedot näkyviksi painettaessa.
   // Myös kuvake muuttuu.
 
   const handleMouseDown = () => {    
@@ -68,7 +71,7 @@ function User(props) {
     return (
       <>       
         <div className="title">
-           {props.localdata.loginname} 
+          {props.localdata.loginname} / {props.userdata[props.localdata.nameid].role} 
         </div>
 
         <div className="userpage">
@@ -78,10 +81,13 @@ function User(props) {
             </div>
             <div className="inout">
               <div>
-                In: {props.userdata[props.localdata.nameid].in}
+                In: {props.userdata[loaderdata.nameid].in} /
               </div>
               <div>
-                Out: {props.userdata[props.localdata.nameid].out}
+                Out: {props.userdata[loaderdata.nameid].out} /
+              </div>
+              <div>
+                Ilmoittamatta: (Tulossa)
               </div>
             </div>
           </div>    
@@ -115,7 +121,7 @@ function User(props) {
     return (
       <>
         <div className="title">
-           {props.localdata.loginname} 
+          {props.localdata.loginname} / {props.userdata[props.localdata.nameid].role} 
         </div>
 
         <div className="userpage">
@@ -125,10 +131,13 @@ function User(props) {
             </div>
             <div className="inout">
               <div>
-                In: {props.userdata[props.localdata.nameid].in}
+                In: {props.userdata[loaderdata.nameid].in} /
               </div>
               <div>
-                Out: {props.userdata[props.localdata.nameid].out}
+                Out: {props.userdata[loaderdata.nameid].out} /
+              </div>
+              <div>
+                Ilmoittamatta: (Tulossa)
               </div>
             </div>
           </div>        

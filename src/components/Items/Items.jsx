@@ -28,9 +28,9 @@ function Items(props) {
    
   const currentDate = new Date()
 
-  const upcomingEvents = items.filter(item => {
-    const eventDate = new Date(Date.parse(item.date))
-    return eventDate >= currentDate
+  const upcomingEvents = props.itemdata.filter(item => {
+    const eventDate = new Date(`${item.date}T${item.timeend}:00`)
+    return eventDate >= currentDate   
   })
 
   return (

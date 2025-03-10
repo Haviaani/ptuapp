@@ -74,7 +74,7 @@ function Coach(props) {
             </div>
           </div>
           
-          <div classNames="coach_titles">
+          <div className="coach_titles">
             Tapahtumapaikat:
             <div className="coach_row">  
               <div className="coach_row_left">
