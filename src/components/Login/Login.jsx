@@ -100,7 +100,7 @@ return (
          <label>Anna käyttäjätunnus</label><br />
           <input type='text' id="login"></input><br />
           <br />
-          <label>Anna sanasana</label><br />
+          <label>Anna salasana</label><br />
           <input type='password' id="password"></input><br />
           {loginMessage && (
               <div className="loginmessage">
