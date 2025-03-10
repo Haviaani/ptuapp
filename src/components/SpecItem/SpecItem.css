@@ -10,6 +10,7 @@
     border-width: 3px;
     background-color: lightgrey;
     height: 100%;
+    overflow-y: auto;
 }
 
 .spec_screens {
